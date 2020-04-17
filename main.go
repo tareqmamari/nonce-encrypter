@@ -35,8 +35,9 @@ func encryptNonceWithCBC(key, value string) (string, string, error) {
 	if len(value)%aes.BlockSize != 0 {
 		panic("plaintext is not a multiple of the block size")
 	}
-
-	block, err := aes.NewCipher([]byte(key))
+	// base64 decode the input
+	keyMat, err := base64.StdEncoding.DecodeString(key)
+	block, err := aes.NewCipher([]byte(keyMat))
 	if err != nil {
 		panic(err)
 	}
